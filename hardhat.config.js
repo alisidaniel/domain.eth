@@ -1,4 +1,5 @@
 require("@nomiclabs/hardhat-waffle");
+const config = require('./config/config');
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -20,8 +21,8 @@ module.exports = {
   solidity: "0.8.4",
   networks: {
 		mumbai: {
-      url: "https://polygon-mumbai.g.alchemy.com/v2/uZ4IH3bH7E6fnZpoag8Mr4JeIWHzsPjN",
-      accounts: ["efbc21b37fae89c30d4ea4e616d66554749921084ad8545c255f2925ee96a26c"],
+      url: config.POLYGON_URL,
+      accounts: [config.POLYGON_ACCOUNT_KEY],
 		}
   }
 };
