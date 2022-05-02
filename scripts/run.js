@@ -35,6 +35,8 @@ const main = async () => {
     const contractBalance = await hre.ethers.provider.getBalance(domainContract.address);
     ownerBalance = await hre.ethers.provider.getBalance(owner.address);
   
+    const names = await domainContract.getAllNames();
+    console.log('Domains records:', names)
     console.log("Contract balance after withdrawal:", hre.ethers.utils.formatEther(contractBalance));
     console.log("Balance of owner after withdrawal:", hre.ethers.utils.formatEther(ownerBalance));
   }

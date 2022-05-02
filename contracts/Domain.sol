@@ -48,7 +48,6 @@ contract Domains is ERC721URIStorage {
         return 3 * 10**17; // To charge smaller amounts, reduce the decimals. This is 0.3
         } else {
         return 1 * 10**17;
-        // return 1 * 10**21;
         }
     }
 
@@ -67,13 +66,13 @@ contract Domains is ERC721URIStorage {
         // Check if enough Matic was paid in the transaction
         require(msg.value >= _price, "Not enough Matic paid");
 
-        	// Combine the name passed into the function  with the TLD
+        // Combine the name passed into the function  with the TLD
         string memory _name = string(abi.encodePacked(name, ".", tld));
-            // Create the SVG (image) for the NFT with the name
+        // Create the SVG (image) for the NFT with the name
         string memory finalSvg = string(abi.encodePacked(svgPartOne, _name, svgPartTwo));
         uint256 newRecordId = _tokenIds.current();
         uint256 length = StringUtils.strlen(name);
-            string memory strLen = Strings.toString(length);
+        string memory strLen = Strings.toString(length);
 
         console.log("Registering %s.%s on the contract with tokenID %d", name, tld, newRecordId);
 
@@ -95,15 +94,12 @@ contract Domains is ERC721URIStorage {
         );
 
         string memory finalTokenUri = string( abi.encodePacked("data:application/json;base64,", json));
-
-        console.log("\n--------------------------------------------------------");
-	    console.log("Final tokenURI", finalTokenUri);
-	    console.log("--------------------------------------------------------\n");
         
         _safeMint(msg.sender, newRecordId);
         _setTokenURI(newRecordId, finalTokenUri);
         domains[name] = msg.sender;
-        console.log("%s has registered a domain!", msg.sender);
+
+        names[newRecordId] = name;
 
         _tokenIds.increment();
     }
@@ -127,9 +123,7 @@ contract Domains is ERC721URIStorage {
         string[] memory allNames = new string[](_tokenIds.current());
         for (uint i = 0; i < _tokenIds.current(); i++) {
             allNames[i] = names[i];
-            console.log("Name for token %d is %s", i, allNames[i]);
         }
-
         return allNames;
     }
 

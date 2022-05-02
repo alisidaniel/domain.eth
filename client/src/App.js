@@ -92,7 +92,7 @@ const App = () => {
 		  
 		// Get all the domain names from our contract
 		const names = await contract.getAllNames();
-		  
+		  console.log(names,)
 		// For each name, get the record and the address
 		const mintRecords = await Promise.all(names.map(async (name) => {
 		const mintRecord = await contract.records(name);
