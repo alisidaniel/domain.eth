@@ -35,7 +35,6 @@ contract Domains is ERC721URIStorage {
     constructor(string memory _tld) ERC721("Ninja Name Service", "NNS") payable  {
         owner = payable(msg.sender);
         tld = _tld;
-        console.log("%s name service deployed", _tld);
     }
 
     // This function will give us the price of a domain based on length
@@ -119,7 +118,6 @@ contract Domains is ERC721URIStorage {
     }
 
     function getAllNames() public view returns (string[] memory) {
-        console.log("Getting all names from contract");
         string[] memory allNames = new string[](_tokenIds.current());
         for (uint i = 0; i < _tokenIds.current(); i++) {
             allNames[i] = names[i];
