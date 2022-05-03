@@ -11,15 +11,13 @@ import { networks } from './utils/networks';
 const TWITTER_HANDLE = '_buildspace';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const tld = '.ninja';
-const CONTRACT_ADDRESS = '0xB15be8A2e07E3d786A0fA24b7a2185d26D73B90d';
+const CONTRACT_ADDRESS = '0xc0149fD340e4Eb567ddC97E8bea280649E040174';
 
 const App = () => {
-
 	const [currentAccount, setCurrentAccount] = React.useState('');
 
 	const [domain, setDomain] = React.useState('');
   	const [record, setRecord] = React.useState('');
-
 	const [network, setNetwork] = React.useState('');
 
 	const [editing, setEditing] = React.useState(false);
@@ -31,15 +29,12 @@ const App = () => {
 	const connectWallet = async () => {
 		try {
 			const { ethereum } = window;
-
 			if (!ethereum) {
 				alert("Get MetaMask -> https://metamask.io/");
 				return;
 			}
-
 			// Fancy method to request access to account.
 			const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-		
 			// Boom! This should print out public address once we authorize Metamask.
 			console.log("Connected", accounts[0]);
 			setCurrentAccount(accounts[0]);
@@ -50,14 +45,12 @@ const App = () => {
 
 	const checkIfWalletIsConnected = async () => {
 		const { ethereum } = window;
-
 		if (!ethereum) {
 			console.log('Make sure you have metamask!');
 			return;
 		} else {
 			console.log('We have the ethereum object', ethereum);
 		}
-
 		const accounts = await ethereum.request({ method: 'eth_accounts' });
 
 		if (accounts.length !== 0) {
@@ -73,7 +66,6 @@ const App = () => {
 		setNetwork(networks[chainId]);
 
 		ethereum.on('chainChanged', handleChainChanged);
-		
 		// Reload the page when they change networks
 		function handleChainChanged(_chainId) {
 		window.location.reload();
@@ -104,7 +96,6 @@ const App = () => {
 		  owner: owner,
 		};
 	  }));
-  
 	  console.log("MINTS FETCHED ", mintRecords);
 	  setMints(mintRecords);
 	  }
@@ -123,11 +114,9 @@ const App = () => {
 			const provider = new ethers.providers.Web3Provider(ethereum);
 			const signer = provider.getSigner();
 			const contract = new ethers.Contract(CONTRACT_ADDRESS, contractAbi.abi, signer);
-	  
 			let tx = await contract.setRecord(domain, record);
 			await tx.wait();
 			console.log("Record set https://mumbai.polygonscan.com/tx/"+tx.hash);
-	  
 			fetchMints();
 			setRecord('');
 			setDomain('');
@@ -136,7 +125,7 @@ const App = () => {
 			console.log(error);
 		  }
 		setLoading(false);
-	  }
+	}
 
 
 	const mintDomain = async () => {
@@ -170,22 +159,19 @@ const App = () => {
 			// Set the record for the domain
 			tx = await contract.setRecord(domain, record);
 			await tx.wait();
-
 			console.log("Record set! https://mumbai.polygonscan.com/tx/"+tx.hash);
 
 			// Call fetchMints after 2 seconds
 			setTimeout(() => {
 				fetchMints();
 			}, 2000);
-		
-			
 			setRecord('');
 			setDomain('');
 		 }	
 		 else {
 			alert("Transaction failed! Please try again");
 		 }
-		 }
+		}
 	  }
 	  catch(error){
 		console.log(error);
@@ -238,7 +224,6 @@ const App = () => {
 		} 
 	  }
 
-
 	// Create a function to render if wallet is not connected yet
 	const renderNotConnectedContainer = () => (
 		<div className="connect-wallet-container">
@@ -250,7 +235,7 @@ const App = () => {
   	);	
 
 	// Form to enter domain name and data
-	const renderInputForm = () =>{
+	const renderInputForm = () => {
 		if (network !== 'Polygon Mumbai Testnet') {
 			return (
 			  <div className="connect-wallet-container">
@@ -259,7 +244,6 @@ const App = () => {
 			  </div>
 			);
 		  }
-		
 		return (
 			<div className="form-container">
 				<div className="first-row">
@@ -278,7 +262,6 @@ const App = () => {
 					placeholder='whats ur ninja power'
 					onChange={e => setRecord(e.target.value)}
 				/>
-
 				{/* If the editing variable is true, return the "Set record" and "Cancel" button */}
 				{editing ? (
 					<div className="button-container">

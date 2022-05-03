@@ -4,6 +4,8 @@ const {BigNumber} = require('ethers')
 
 
 const matic = 100000000000000000;
+const name = 'clubhouse';
+const record = 'powerhorse';
 
 describe("Contract deployment", async function() {
     let contract;
@@ -28,8 +30,18 @@ describe("Contract deployment", async function() {
         expect(res.toString()).to.be.eqls(matic.toString())
     })
 
-    it("Should not return error for setRecord", async function () {
-         expect(await contract.setRecord('starclubs', 'http/')).not.be.reverted
+    it("Should return domain names and record name ", async function () {
+        await contract.setRecord(name, record);
+
+         expect(await contract.getRecord(name)).to.be.eqls(record);
+
+         expect(await contract.getAllNames()).to.have.lengthOf(0);
+    })
+
+    it("Should register domain", async function(){
+        const txn = await contract.register(name, {value: hre.ethers.utils.parseEther('1234')});
+        await txn.wait();
+        expect(txn.value.toString()).to.be.eqls(hre.ethers.utils.parseEther('1234').toString());
     })
 })
 
